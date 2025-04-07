@@ -1,13 +1,19 @@
 export function el(el) {
-    return document.querySelector(el);
+  return document.querySelector(el);
 }
 
 export function els(elements) {
-    return document.querySelectorAll(elements);
+  return document.querySelectorAll(elements);
 }
 
 export function ev(element, event, fn) {
-    if (element != null) {
-        element.addEventListener(event, fn);
-    }
+  if (element != null) {
+    element.addEventListener(event, fn);
+  }
+}
+
+export function rev(element, event, fn) {
+  if (element != null) {
+    element.removeEventListener(event, fn);
+  }
 }
