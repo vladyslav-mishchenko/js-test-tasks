@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+  nodejs:
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: js-test-tasks:latest
+    container_name: js-test-tasks
+    volumes:
+      - .:/app
+    ports:
+      - '7777:7777'

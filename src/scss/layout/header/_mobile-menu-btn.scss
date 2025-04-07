@@ -1,0 +1,30 @@
+.mobile-menu-btn {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+
+  cursor: pointer;
+
+  > .container {
+    width: 80%;
+
+    > .line {
+      height: 2px;
+      background-color: #ffffff;
+    }
+
+    > .top {
+    }
+
+    > .center {
+      margin: 5px 0 5px 0;
+    }
+
+    > .bottom {
+    }
+  }
+}

@@ -1,0 +1,43 @@
+@use '../../settings/breakpoints';
+@use '../../settings/variables' as v;
+
+@use './bottom';
+
+.footer {
+  background-color: #232536;
+  padding: 60px 0;
+
+  // @include breakpoints.media-breakpoint-only(xl) {}
+
+  // @include breakpoints.media-breakpoint-only(lg) {}
+
+  // @include breakpoints.media-breakpoint-only(md) {}
+
+  // @include breakpoints.media-breakpoint-only(sm) {}
+
+  // @include breakpoints.media-breakpoint-only(xs) {}
+
+  > .footer-subscribe {
+  }
+
+  > .footer-bottom {
+    padding-top: 50px;
+  }
+}
+
+.footer-subscribe {
+  > .container {
+    position: relative;
+  }
+}
+
+.footer-subscribe-preloader {
+  display: none;
+  background-color: #000000d0;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

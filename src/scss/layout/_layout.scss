@@ -1,0 +1,71 @@
+@use '../settings/breakpoints';
+@use '../settings/variables';
+
+@use './header/header';
+@use './content/content';
+@use './footer/footer';
+
+html {
+}
+
+body {
+  font-family: f101;
+}
+
+html,
+body {
+  min-height: 100vh;
+}
+
+.website {
+  min-height: 100vh;
+}
+
+.website {
+  margin: 0 auto;
+
+  min-width: 320px;
+  max-width: 1920px;
+
+  display: grid;
+
+  // header: fixed
+  // content: 1fr
+  // footer auto
+  grid-template-rows: 1fr auto;
+}
+
+.g {
+  > .container {
+    margin: 0 auto;
+
+    @include breakpoints.media-breakpoint-only(xxl) {
+      max-width: 1320px;
+    }
+
+    @include breakpoints.media-breakpoint-only(xl) {
+      max-width: 1140px;
+    }
+
+    @include breakpoints.media-breakpoint-only(lg) {
+      max-width: 960px;
+    }
+
+    @include breakpoints.media-breakpoint-only(md) {
+      max-width: 720px;
+    }
+
+    @include breakpoints.media-breakpoint-only(sm) {
+      max-width: auto;
+      padding: 0 15px;
+    }
+
+    @include breakpoints.media-breakpoint-only(xs) {
+      max-width: auto;
+      padding: 0 15px;
+    }
+  }
+
+  > .container-fluid {
+  }
+}

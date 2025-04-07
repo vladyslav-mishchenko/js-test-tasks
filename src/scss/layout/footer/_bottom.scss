@@ -1,0 +1,54 @@
+@use '../../settings/breakpoints';
+@use '../../settings/variables' as v;
+
+.footer-bottom {
+}
+
+.b-footer-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+
+  > .c1 {
+  }
+
+  > .c2 {
+    justify-self: end;
+  }
+}
+
+.footer-copyright {
+  > .t {
+    font-size: 14px;
+    color: #ffffff;
+    opacity: 70%;
+  }
+}
+
+.footer-socials {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+
+  > .item {
+    > .link {
+      display: block;
+
+      &:hover {
+        .social-icon {
+          .icon {
+            color: v.$menu-item-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
+.social-icon {
+  .icon {
+    font-size: 24px;
+    color: #ffffff;
+    transition: color 0.2s linear;
+  }
+}

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> head}}
+  </head>
+
+  <body class="body">
+    <div class="website">
+      {{> header }}
+
+      <div class="content">
+        <div class="b-source g">
+          <div class="container">
+            <div class="">
+              <div>
+                <textarea class="source-text" name="" id="sourcetext"></textarea>
+              </div>
+
+              <div>
+                <button class="enter-text-btn" id="enter">Enter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="b-target g">
+          <div class="container">
+            <div id="targettext" class="target-text">Hello JS!</div>
+          </div>
+        </div>
+      </div>
+
+      {{> footer }}
+    </div>
+
+    {{> scripts }}
+  </body>
+</html>
