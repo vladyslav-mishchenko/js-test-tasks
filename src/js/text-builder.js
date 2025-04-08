@@ -5,7 +5,7 @@ const targettext = el('#targettext');
 const enterbtn = el('#enterbtn');
 
 let sourceTextDefault = '';
-let coordinates = [];
+const coordinates = [];
 
 // element:event:function
 ev(enterbtn, 'click', enterText);
@@ -47,17 +47,17 @@ function surroundSelectedText() {
 function elementHTML(string) {
   const str = string.textContent;
 
-  let a = [];
+  const elements = [];
 
   for (let i = 0; i < str.length; i++) {
     const span = document.createElement('span');
     span.setAttribute('class', 'e');
     span.innerText = str[i];
 
-    a.push(span);
+    elements.push(span);
   }
 
-  return a;
+  return elements;
 }
 
 function targetTextToHTML() {
@@ -180,7 +180,7 @@ function buildCoordinates() {
   let cssclass = '';
   let item = '';
 
-  let elements = els('#targettext > span');
+  const elements = els('#targettext > span');
   for (let i = 0; i < elements.length; i++) {
     top = elements[i].getBoundingClientRect().top - parentTop;
     left = elements[i].getBoundingClientRect().left - parentLeft;
@@ -218,7 +218,7 @@ function lookingForTarget(x, y, coordinatesArray) {
 }
 
 function hoverTarget(target) {
-  let elements = els('#targettext > .e');
+  const elements = els('#targettext > .e');
   elements[target].classList.add('target');
 
   for (let i = 0; i < elements.length; i++) {
