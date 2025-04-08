@@ -5,6 +5,7 @@ const targettext = el('#targettext');
 const enterbtn = el('#enterbtn');
 
 let sourceTextDefault = '';
+let coordinates = [];
 
 // element:event:function
 ev(enterbtn, 'click', enterText);
@@ -22,6 +23,8 @@ function selectStart() {
 
 function textSelectionComplete() {
   appendHTMLChildesIntoTarget();
+  buildCoordinates();
+
   rev(targettext, 'selectstart', selectStart);
   rev(targettext, 'mouseup', textSelectionComplete);
 }
@@ -146,15 +149,81 @@ function moveSelected(e) {
   ev(mobile, 'mouseup', actionAfterMove);
 
   function move(e) {
-    moving(e.pageX, e.pageY);
+    // moving(e.pageX, e.pageY);
+    moving(e.clientX, e.clientY);
   }
 
   function moving(x, y) {
-    mobile.style.top = y - parentTop - shiftY + 'px';
-    mobile.style.left = x - parentLeft - shiftX + 'px';
+    let coordinateX = x - parentLeft - shiftX;
+    let coordinateY = y - parentTop - shiftY;
+
+    mobile.style.top = coordinateY + 'px';
+    mobile.style.left = coordinateX + 'px';
+
+    lookingForTarget(coordinateX, coordinateY, coordinates);
   }
 
   function actionAfterMove() {
     rev(document, 'mousemove', move);
+    console.log('action');
+  }
+}
+
+function buildCoordinates() {
+  const parentTop = targettext.getBoundingClientRect().top;
+  const parentLeft = targettext.getBoundingClientRect().left;
+
+  let top = '';
+  let left = '';
+  let offsetWidth = '';
+  let offsetHeight = '';
+  let cssclass = '';
+  let item = '';
+
+  let elements = els('#targettext > span');
+  for (let i = 0; i < elements.length; i++) {
+    top = elements[i].getBoundingClientRect().top - parentTop;
+    left = elements[i].getBoundingClientRect().left - parentLeft;
+    offsetWidth = elements[i].offsetWidth;
+    offsetHeight = elements[i].offsetHeight;
+    cssclass = elements[i].getAttribute('class');
+    item = i;
+
+    if (elements[i].classList == 'e') {
+      const coordinate = {
+        top: top,
+        height: top + offsetHeight,
+        left: left,
+        width: left + offsetWidth,
+        cssClass: cssclass,
+        item: item,
+      };
+      coordinates.push(coordinate);
+    }
+  }
+}
+
+function lookingForTarget(x, y, coordinatesArray) {
+  for (let i = 0; i < coordinatesArray.length; i++) {
+    if (
+      y >= coordinates[i].top &&
+      y <= coordinates[i].height &&
+      x >= coordinates[i].left &&
+      x <= coordinates[i].width
+    ) {
+      hoverTarget(coordinates[i].item);
+      break;
+    }
+  }
+}
+
+function hoverTarget(target) {
+  let elements = els('#targettext > .e');
+  elements[target].classList.add('target');
+
+  for (let i = 0; i < elements.length; i++) {
+    if (target != i) {
+      elements[i].classList.remove('target');
+    }
   }
 }
