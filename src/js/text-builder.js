@@ -4,7 +4,7 @@ const sourcetext = el('#sourcetext');
 const targettext = el('#targettext');
 const enterbtn = el('#enterbtn');
 
-let sourceTextDefault = "";
+let sourceTextDefault = '';
 
 // element:event:function
 ev(enterbtn, 'click', enterText);
@@ -83,41 +83,42 @@ function targetTextToHTML() {
   }
 }
 
-function selectedMobileBlock(){
-    const selected = el('#targettext > .selected');
+function selectedMobileBlock() {
+  const selected = el('#targettext > .selected');
 
-    const mobile = selected.cloneNode(true);
-    mobile.classList.remove('selected');
-    mobile.classList.add('mobile');
+  const mobile = selected.cloneNode(true);
+  mobile.classList.remove('selected');
+  mobile.classList.add('mobile');
 
-    const close = document.createElement('span');
-    close.setAttribute('class', 'close');
+  const close = document.createElement('span');
+  close.setAttribute('class', 'close');
 
-    // close selections and go back to default source text
-    ev(close, 'mouseup', toDefaultText);
-    ev(close, 'mousedown', (e) => {e.stopPropagation();});
+  // close selections and go back to default source text
+  ev(close, 'mouseup', toDefaultText);
+  ev(close, 'mousedown', (e) => {
+    e.stopPropagation();
+  });
 
-    // move selected element
-    ev(mobile, 'mousedown', moveSelected);
-    ev(mobile, 'mouseup', actionAfterMove);
+  // move selected element
+  ev(mobile, 'mousedown', moveSelected);
 
-    const line1 = document.createElement('span');
-    const line2 = document.createElement('span');
-    line1.setAttribute('class', 'line line-1');
-    line2.setAttribute('class', 'line line-2');
+  const line1 = document.createElement('span');
+  const line2 = document.createElement('span');
+  line1.setAttribute('class', 'line line-1');
+  line2.setAttribute('class', 'line line-2');
 
-    close.appendChild(line1);
-    close.appendChild(line2);
+  close.appendChild(line1);
+  close.appendChild(line2);
 
-    mobile.appendChild(close);
+  mobile.appendChild(close);
 
-    const parentTop = targettext.getBoundingClientRect().top;
-    const parentLeft = targettext.getBoundingClientRect().left;
+  const parentTop = targettext.getBoundingClientRect().top;
+  const parentLeft = targettext.getBoundingClientRect().left;
 
-    mobile.style.top = (selected.getBoundingClientRect().top - parentTop) + 'px';
-    mobile.style.left = (selected.getBoundingClientRect().left - parentLeft) + 'px';
+  mobile.style.top = selected.getBoundingClientRect().top - parentTop + 'px';
+  mobile.style.left = selected.getBoundingClientRect().left - parentLeft + 'px';
 
-    targettext.appendChild(mobile);
+  targettext.appendChild(mobile);
 }
 
 function appendHTMLChildesIntoTarget() {
@@ -126,16 +127,34 @@ function appendHTMLChildesIntoTarget() {
   selectedMobileBlock();
 }
 
-function toDefaultText(e){
-    e.stopImmediatePropagation();
-    targettext.innerHTML = sourceTextDefault;
-    ev(targettext, 'selectstart', selectStart);
+function toDefaultText(e) {
+  e.stopPropagation();
+  targettext.innerHTML = sourceTextDefault;
+  ev(targettext, 'selectstart', selectStart);
 }
 
-function moveSelected(){
-    console.log('move');
-}
+function moveSelected(e) {
+  const mobile = el('.mobile');
 
-function actionAfterMove(){
-    console.log('after move');
+  let shiftX = e.clientX - mobile.getBoundingClientRect().left;
+  let shiftY = e.clientY - mobile.getBoundingClientRect().top;
+
+  const parentTop = targettext.getBoundingClientRect().top;
+  const parentLeft = targettext.getBoundingClientRect().left;
+
+  ev(document, 'mousemove', move);
+  ev(mobile, 'mouseup', actionAfterMove);
+
+  function move(e) {
+    moving(e.pageX, e.pageY);
+  }
+
+  function moving(x, y) {
+    mobile.style.top = y - parentTop - shiftY + 'px';
+    mobile.style.left = x - parentLeft - shiftX + 'px';
+  }
+
+  function actionAfterMove() {
+    rev(document, 'mousemove', move);
+  }
 }

@@ -83,11 +83,11 @@
   }
 }
 
-.mobile{
+.mobile {
   position: absolute;
-  
+
   background-color: #aaff00;
-  transition: background-color .2s linear;
+  transition: background-color 0.2s linear;
 
   border: 1px solid #aaff00;
 
@@ -97,7 +97,7 @@
   //   border: 1px solid #88cc00;
   // }
 
-  >.close{
+  > .close {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -114,30 +114,30 @@
     border: 1px solid #ff0000;
 
     background-color: #ff0000;
-    transition: background-color .2s linear;
+    transition: background-color 0.2s linear;
 
-    >.line{
+    > .line {
       width: 10px;
       height: 2px;
 
       background-color: #ffffff;
-      transition: background-color .2s linear;
+      transition: background-color 0.2s linear;
 
       position: absolute;
     }
 
-    >.line-1{
+    > .line-1 {
       rotate: 45deg;
     }
 
-    >.line-2{
+    > .line-2 {
       rotate: -45deg;
     }
 
-    &:hover{
+    &:hover {
       background-color: #ffffff;
 
-      >.line{  
+      > .line {
         background-color: #ff0000;
       }
     }
