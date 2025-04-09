@@ -90,8 +90,15 @@
 
   .target {
     color: #ff0000;
-    margin: 0 0 0 3px;
     transition: all 0.35s linear;
+  }
+
+  .letter{
+    margin: 0 3px 0 3px;
+  }
+
+  .letters{
+    margin: 0 0 0 3px;
   }
 }
 

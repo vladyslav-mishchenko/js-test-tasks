@@ -281,11 +281,18 @@ function lookingForTarget(x, y, coordinatesArray) {
 
 function hoverTarget(target) {
   const elements = els('#targettext > span');
-  elements[target].classList.add('target');
+  const selected = el('#targettext > .selected');
+
+  // different target hovering
+  if(selected.innerText.length > 1){
+    elements[target].classList.add('target', 'letters');
+  }else{
+    elements[target].classList.add('target', 'letter');
+  }
 
   for (let i = 0; i < elements.length; i++) {
     if (target != i) {
-      elements[i].classList.remove('target');
+      elements[i].classList.remove('target', 'letter', 'letters');
     }
   }
 }
