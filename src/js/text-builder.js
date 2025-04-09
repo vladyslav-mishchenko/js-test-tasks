@@ -62,7 +62,7 @@ function elementHTML(string) {
 
 function targetTextToHTML() {
   const nodes = targettext.childNodes;
-  let nodesArray = [];
+  const nodesArray = [];
 
   for (let i = 0; i < nodes.length; i++) {
     // 1:element node type
@@ -114,6 +114,11 @@ function selectedMobileBlock() {
   close.appendChild(line2);
 
   mobile.appendChild(close);
+
+  const marker = document.createElement('span');
+  marker.setAttribute('class', 'marker');
+
+  mobile.appendChild(marker);
 
   const parentTop = targettext.getBoundingClientRect().top;
   const parentLeft = targettext.getBoundingClientRect().left;
@@ -218,7 +223,7 @@ function lookingForTarget(x, y, coordinatesArray) {
 }
 
 function hoverTarget(target) {
-  const elements = els('#targettext > .e');
+  const elements = els('#targettext > span');
   elements[target].classList.add('target');
 
   for (let i = 0; i < elements.length; i++) {
