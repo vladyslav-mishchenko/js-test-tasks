@@ -4,8 +4,13 @@ const sourcetext = el('#sourcetext');
 const targettext = el('#targettext');
 const enterbtn = el('#enterbtn');
 
-let sourceTextDefault = '';
-let coordinates = null;
+/*
+Global app data
+*/
+let appData = {
+  sourceText: null,
+  coordinates: null,
+};
 
 // element:event:function
 ev(enterbtn, 'click', enterText);
@@ -15,7 +20,7 @@ Copy text from input into work area
 */
 function enterText() {
   targettext.innerHTML = sourcetext.value;
-  sourceTextDefault = sourcetext.value;
+  appData.sourceText = sourcetext.value;
   sourcetext.value = '';
   ev(targettext, 'selectstart', selectStart);
 }
@@ -35,7 +40,9 @@ function textSelectionComplete() {
   targetTextToHTML();
   selectedMobileBlock();
 
-  coordinates = buildCoordinates();
+  // coordinates = buildCoordinates();
+
+  appData.coordinates = buildCoordinates();
 
   rev(targettext, 'selectstart', selectStart);
   rev(targettext, 'mouseup', textSelectionComplete);
@@ -159,7 +166,7 @@ Default text if click 'close' on moveable block section
 */
 function toDefaultText(e) {
   e.stopPropagation();
-  targettext.innerHTML = sourceTextDefault;
+  targettext.innerHTML = appData.sourceText;
   ev(targettext, 'selectstart', selectStart);
 }
 
@@ -190,7 +197,7 @@ function moveSelected(e) {
     mobile.style.top = coordinateY + 'px';
     mobile.style.left = coordinateX + 'px';
 
-    target = lookingForTarget(coordinateX, coordinateY, coordinates);
+    target = lookingForTarget(coordinateX, coordinateY, appData.coordinates);
   }
 
   function actionAfterMove() {
