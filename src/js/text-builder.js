@@ -168,7 +168,58 @@ function moveSelected(e) {
 
   function actionAfterMove() {
     rev(document, 'mousemove', move);
-    console.log(target);
+
+    if (typeof target !== 'undefined') {
+      const selected = el('#targettext > .selected');
+
+      if (selected.innerText.length > 1) {
+        insertBeforeTargetPosition();
+      } else {
+        changePositionsElements();
+      }
+    }
+  }
+
+  function insertBeforeTargetPosition() {
+    const selected = el('#targettext > .selected');
+    const targetText = el('#targettext');
+    const targetTextElements = els('#targettext > span');
+
+    const targetElement = targetTextElements[target];
+
+    const inserted = document.createElement('span');
+    inserted.setAttribute('class', 'inserted');
+    inserted.innerHTML = selected.innerText;
+
+    targetText.insertBefore(inserted, targetElement);
+
+    el('#targettext > .mobile').remove();
+    el('#targettext > .selected').remove();
+
+    const modifiedText = targetText.innerText;
+
+    el('#targettext').innerHTML = modifiedText;
+    ev(targettext, 'selectstart', selectStart);
+  }
+
+  function changePositionsElements() {
+    const selected = el('#targettext > .selected');
+    const targetText = el('#targettext');
+    const targetTextElements = els('#targettext > span');
+
+    const targetElement = targetTextElements[target];
+
+    const textSelectedElement = selected.innerText;
+    const textTargetElement = targetElement.innerText;
+
+    el('#targettext > .mobile').remove();
+    el('#targettext > .selected').innerHTML = textTargetElement;
+    el('#targettext > .target').innerHTML = textSelectedElement;
+
+    const modifiedText = targetText.innerText;
+
+    el('#targettext').innerHTML = modifiedText;
+    ev(targettext, 'selectstart', selectStart);
   }
 }
 

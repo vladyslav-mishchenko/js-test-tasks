@@ -80,11 +80,17 @@
 
   .selected {
     border: 1px dashed #ff0000;
+    color: #ff0000;
+  }
+
+  .inserted {
+    border: 1px dashed #ff0000;
+    color: #ff0000;
   }
 
   .target {
     color: #ff0000;
-    margin: 0 3px 0 0;
+    margin: 0 0 0 3px;
     transition: all 0.35s linear;
   }
 }
