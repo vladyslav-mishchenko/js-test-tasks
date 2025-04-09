@@ -10,6 +10,9 @@ let coordinates = null;
 // element:event:function
 ev(enterbtn, 'click', enterText);
 
+/*
+Copy text from input into work area
+*/
 function enterText() {
   targettext.innerHTML = sourcetext.value;
   sourceTextDefault = sourcetext.value;
@@ -17,10 +20,16 @@ function enterText() {
   ev(targettext, 'selectstart', selectStart);
 }
 
+/*
+Start to build html from source string
+*/
 function selectStart() {
   ev(targettext, 'mouseup', textSelectionComplete);
 }
 
+/*
+html from source string with elements coordinates
+*/
 function textSelectionComplete() {
   surroundSelectedText();
   targetTextToHTML();
@@ -32,6 +41,10 @@ function textSelectionComplete() {
   rev(targettext, 'mouseup', textSelectionComplete);
 }
 
+/* 
+add selected elements into span html tag
+with "selected" css class
+*/
 function surroundSelectedText() {
   const selection = window.getSelection();
 
@@ -47,22 +60,9 @@ function surroundSelectedText() {
   range.surroundContents(span);
 }
 
-function elementHTML(string) {
-  const str = string.textContent;
-
-  const elements = [];
-
-  for (let i = 0; i < str.length; i++) {
-    const span = document.createElement('span');
-    span.setAttribute('class', 'e');
-    span.innerText = str[i];
-
-    elements.push(span);
-  }
-
-  return elements;
-}
-
+/*
+Append html elements into work area div tag
+*/
 function targetTextToHTML() {
   const nodes = targettext.childNodes;
   const nodesArray = [];
@@ -89,6 +89,28 @@ function targetTextToHTML() {
   }
 }
 
+/*
+html elements from source string without selected already
+*/
+function elementHTML(string) {
+  const str = string.textContent;
+
+  const elements = [];
+
+  for (let i = 0; i < str.length; i++) {
+    const span = document.createElement('span');
+    span.setAttribute('class', 'e');
+    span.innerText = str[i];
+
+    elements.push(span);
+  }
+
+  return elements;
+}
+
+/*
+Build moveable selected block
+*/
 function selectedMobileBlock() {
   const selected = el('#targettext > .selected');
 
@@ -132,12 +154,18 @@ function selectedMobileBlock() {
   targettext.appendChild(mobile);
 }
 
+/*
+Default text if click 'close' on moveable block section
+*/
 function toDefaultText(e) {
   e.stopPropagation();
   targettext.innerHTML = sourceTextDefault;
   ev(targettext, 'selectstart', selectStart);
 }
 
+/*
+Moving selected moveable block
+*/
 function moveSelected(e) {
   const mobile = el('.mobile');
   let target = null;
@@ -152,7 +180,6 @@ function moveSelected(e) {
   ev(mobile, 'mouseup', actionAfterMove);
 
   function move(e) {
-    // moving(e.pageX, e.pageY);
     moving(e.clientX, e.clientY);
   }
 
@@ -223,6 +250,9 @@ function moveSelected(e) {
   }
 }
 
+/*
+Elements coordinates
+*/
 function buildCoordinates() {
   const elements = els('#targettext > span');
   const text = el('#targettext');
@@ -263,6 +293,9 @@ function buildCoordinates() {
   return coordinatesArray;
 }
 
+/*
+Looking for target element with cursor coordinates
+*/
 function lookingForTarget(x, y, coordinatesArray) {
   let targetItem = null;
   for (let i = 0; i < coordinatesArray.length; i++) {
@@ -279,14 +312,17 @@ function lookingForTarget(x, y, coordinatesArray) {
   }
 }
 
+/*
+Hovering target element depends on one or more elements selected
+*/
 function hoverTarget(target) {
   const elements = els('#targettext > span');
   const selected = el('#targettext > .selected');
 
   // different target hovering
-  if(selected.innerText.length > 1){
+  if (selected.innerText.length > 1) {
     elements[target].classList.add('target', 'letters');
-  }else{
+  } else {
     elements[target].classList.add('target', 'letter');
   }
 
