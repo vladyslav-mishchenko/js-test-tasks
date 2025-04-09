@@ -5,7 +5,7 @@ const targettext = el('#targettext');
 const enterbtn = el('#enterbtn');
 
 let sourceTextDefault = '';
-const coordinates = [];
+let coordinates = null;
 
 // element:event:function
 ev(enterbtn, 'click', enterText);
@@ -22,17 +22,14 @@ function selectStart() {
 }
 
 function textSelectionComplete() {
-  appendHTMLChildesIntoTarget();
-  buildCoordinates();
-
-  rev(targettext, 'selectstart', selectStart);
-  rev(targettext, 'mouseup', textSelectionComplete);
-}
-
-function appendHTMLChildesIntoTarget() {
   surroundSelectedText();
   targetTextToHTML();
   selectedMobileBlock();
+
+  coordinates = buildCoordinates();
+
+  rev(targettext, 'selectstart', selectStart);
+  rev(targettext, 'mouseup', textSelectionComplete);
 }
 
 function surroundSelectedText() {
@@ -176,8 +173,10 @@ function moveSelected(e) {
 }
 
 function buildCoordinates() {
-  const parentTop = targettext.getBoundingClientRect().top;
-  const parentLeft = targettext.getBoundingClientRect().left;
+  const elements = els('#targettext > span');
+  const text = el('#targettext');
+
+  let coordinatesArray = [];
 
   let top = '';
   let left = '';
@@ -186,7 +185,9 @@ function buildCoordinates() {
   let cssclass = '';
   let item = '';
 
-  const elements = els('#targettext > span');
+  const parentTop = text.getBoundingClientRect().top;
+  const parentLeft = text.getBoundingClientRect().left;
+
   for (let i = 0; i < elements.length; i++) {
     top = elements[i].getBoundingClientRect().top - parentTop;
     left = elements[i].getBoundingClientRect().left - parentLeft;
@@ -204,9 +205,11 @@ function buildCoordinates() {
         cssClass: cssclass,
         item: item,
       };
-      coordinates.push(coordinate);
+      coordinatesArray.push(coordinate);
     }
   }
+
+  return coordinatesArray;
 }
 
 function lookingForTarget(x, y, coordinatesArray) {
