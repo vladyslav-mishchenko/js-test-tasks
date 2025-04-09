@@ -29,6 +29,12 @@ function textSelectionComplete() {
   rev(targettext, 'mouseup', textSelectionComplete);
 }
 
+function appendHTMLChildesIntoTarget() {
+  surroundSelectedText();
+  targetTextToHTML();
+  selectedMobileBlock();
+}
+
 function surroundSelectedText() {
   const selection = window.getSelection();
 
@@ -129,12 +135,6 @@ function selectedMobileBlock() {
   targettext.appendChild(mobile);
 }
 
-function appendHTMLChildesIntoTarget() {
-  surroundSelectedText();
-  targetTextToHTML();
-  selectedMobileBlock();
-}
-
 function toDefaultText(e) {
   e.stopPropagation();
   targettext.innerHTML = sourceTextDefault;
@@ -143,6 +143,7 @@ function toDefaultText(e) {
 
 function moveSelected(e) {
   const mobile = el('.mobile');
+  let target = null;
 
   let shiftX = e.clientX - mobile.getBoundingClientRect().left;
   let shiftY = e.clientY - mobile.getBoundingClientRect().top;
@@ -165,12 +166,12 @@ function moveSelected(e) {
     mobile.style.top = coordinateY + 'px';
     mobile.style.left = coordinateX + 'px';
 
-    lookingForTarget(coordinateX, coordinateY, coordinates);
+    target = lookingForTarget(coordinateX, coordinateY, coordinates);
   }
 
   function actionAfterMove() {
     rev(document, 'mousemove', move);
-    console.log('action');
+    console.log(target);
   }
 }
 
@@ -209,15 +210,17 @@ function buildCoordinates() {
 }
 
 function lookingForTarget(x, y, coordinatesArray) {
+  let targetItem = null;
   for (let i = 0; i < coordinatesArray.length; i++) {
     if (
-      y >= coordinates[i].top &&
-      y <= coordinates[i].height &&
-      x >= coordinates[i].left &&
-      x <= coordinates[i].width
+      y >= coordinatesArray[i].top &&
+      y <= coordinatesArray[i].height &&
+      x >= coordinatesArray[i].left &&
+      x <= coordinatesArray[i].width
     ) {
-      hoverTarget(coordinates[i].item);
-      break;
+      targetItem = coordinatesArray[i].item;
+      hoverTarget(targetItem);
+      return targetItem;
     }
   }
 }
