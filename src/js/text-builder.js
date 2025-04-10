@@ -40,9 +40,8 @@ function textSelectionComplete() {
   targetTextToHTML();
   selectedMobileBlock();
 
-  // coordinates = buildCoordinates();
-
   appData.coordinates = buildCoordinates();
+  console.log(appData.coordinates);
 
   rev(targettext, 'selectstart', selectStart);
   rev(targettext, 'mouseup', textSelectionComplete);
@@ -191,8 +190,11 @@ function moveSelected(e) {
   }
 
   function moving(x, y) {
-    let coordinateX = x - parentLeft - shiftX;
-    let coordinateY = y - parentTop - shiftY;
+    // let coordinateX = x - parentLeft - shiftX;
+    // let coordinateY = y - parentTop - shiftY;
+
+    let coordinateX = Math.round(x - parentLeft - shiftX);
+    let coordinateY = Math.round(y - parentTop - shiftY);
 
     mobile.style.top = coordinateY + 'px';
     mobile.style.left = coordinateX + 'px';
@@ -285,15 +287,31 @@ function buildCoordinates() {
     item = i;
 
     if (elements[i].classList == 'e') {
+      // const coordinate = {
+      //   top: top,
+      //   height: top + offsetHeight,
+      //   left: left,
+      //   width: left + offsetWidth,
+      //   cssClass: cssclass,
+      //   item: item,
+      // };
+      // coordinatesArray.push(coordinate);
+
       const coordinate = {
         top: top,
         height: top + offsetHeight,
         left: left,
         width: left + offsetWidth,
-        cssClass: cssclass,
-        item: item,
       };
-      coordinatesArray.push(coordinate);
+
+      const coordinateValueRound = {}
+      for(let c in coordinate){
+        coordinateValueRound[c] = Math.round(coordinate[c]);
+      }
+
+      coordinateValueRound['item'] = i;
+
+      coordinatesArray.push(coordinateValueRound);
     }
   }
 
