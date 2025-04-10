@@ -41,7 +41,6 @@ function textSelectionComplete() {
   selectedMobileBlock();
 
   appData.coordinates = buildCoordinates();
-  console.log(appData.coordinates);
 
   rev(targettext, 'selectstart', selectStart);
   rev(targettext, 'mouseup', textSelectionComplete);
@@ -266,13 +265,12 @@ function buildCoordinates() {
   const elements = els('#targettext > span');
   const text = el('#targettext');
 
-  let coordinatesArray = [];
+  let coordinatesObject = {};
 
   let top = '';
   let left = '';
   let offsetWidth = '';
   let offsetHeight = '';
-  let cssclass = '';
   let item = '';
 
   const parentTop = text.getBoundingClientRect().top;
@@ -283,20 +281,9 @@ function buildCoordinates() {
     left = elements[i].getBoundingClientRect().left - parentLeft;
     offsetWidth = elements[i].offsetWidth;
     offsetHeight = elements[i].offsetHeight;
-    cssclass = elements[i].getAttribute('class');
     item = i;
 
     if (elements[i].classList == 'e') {
-      // const coordinate = {
-      //   top: top,
-      //   height: top + offsetHeight,
-      //   left: left,
-      //   width: left + offsetWidth,
-      //   cssClass: cssclass,
-      //   item: item,
-      // };
-      // coordinatesArray.push(coordinate);
-
       const coordinate = {
         top: top,
         height: top + offsetHeight,
@@ -305,17 +292,27 @@ function buildCoordinates() {
       };
 
       const coordinateValueRound = {};
-      for (let c in coordinate) {
-        coordinateValueRound[c] = Math.round(coordinate[c]);
+      for (let key in coordinate) {
+        coordinateValueRound[key] = Math.round(coordinate[key]);
       }
 
-      coordinateValueRound['item'] = i;
-
-      coordinatesArray.push(coordinateValueRound);
+      for (
+        let topCoordinate = coordinateValueRound.top;
+        topCoordinate <= coordinateValueRound.height;
+        topCoordinate++
+      ) {
+        for (
+          let leftCoordinate = coordinateValueRound.left;
+          leftCoordinate <= coordinateValueRound.width;
+          leftCoordinate++
+        ) {
+          coordinatesObject[topCoordinate.toString() + leftCoordinate.toString()] = item;
+        }
+      }
     }
   }
 
-  return coordinatesArray;
+  return coordinatesObject;
 }
 
 /*
@@ -323,18 +320,14 @@ Looking for target element with cursor coordinates
 */
 function lookingForTarget(x, y, coordinatesArray) {
   let targetItem = null;
-  for (let i = 0; i < coordinatesArray.length; i++) {
-    if (
-      y >= coordinatesArray[i].top &&
-      y <= coordinatesArray[i].height &&
-      x >= coordinatesArray[i].left &&
-      x <= coordinatesArray[i].width
-    ) {
-      targetItem = coordinatesArray[i].item;
-      hoverTarget(targetItem);
-      return targetItem;
-    }
+  let key = x.toString() + y.toString();
+
+  if (coordinatesArray[key]) {
+    targetItem = coordinatesArray[key];
+    hoverTarget(targetItem);
   }
+
+  return targetItem;
 }
 
 /*
