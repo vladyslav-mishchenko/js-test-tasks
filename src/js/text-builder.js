@@ -41,7 +41,6 @@ function textSelectionComplete() {
   selectedMobileBlock();
 
   appData.coordinates = buildCoordinates();
-  console.log(appData.coordinates);
 
   rev(targettext, 'selectstart', selectStart);
   rev(targettext, 'mouseup', textSelectionComplete);
@@ -190,9 +189,6 @@ function moveSelected(e) {
   }
 
   function moving(x, y) {
-    // let coordinateX = x - parentLeft - shiftX;
-    // let coordinateY = y - parentTop - shiftY;
-
     let coordinateX = Math.round(x - parentLeft - shiftX);
     let coordinateY = Math.round(y - parentTop - shiftY);
 
@@ -272,7 +268,6 @@ function buildCoordinates() {
   let left = '';
   let offsetWidth = '';
   let offsetHeight = '';
-  let cssclass = '';
   let item = '';
 
   const parentTop = text.getBoundingClientRect().top;
@@ -283,20 +278,9 @@ function buildCoordinates() {
     left = elements[i].getBoundingClientRect().left - parentLeft;
     offsetWidth = elements[i].offsetWidth;
     offsetHeight = elements[i].offsetHeight;
-    cssclass = elements[i].getAttribute('class');
     item = i;
 
     if (elements[i].classList == 'e') {
-      // const coordinate = {
-      //   top: top,
-      //   height: top + offsetHeight,
-      //   left: left,
-      //   width: left + offsetWidth,
-      //   cssClass: cssclass,
-      //   item: item,
-      // };
-      // coordinatesArray.push(coordinate);
-
       const coordinate = {
         top: top,
         height: top + offsetHeight,
@@ -305,11 +289,11 @@ function buildCoordinates() {
       };
 
       const coordinateValueRound = {};
-      for (let c in coordinate) {
-        coordinateValueRound[c] = Math.round(coordinate[c]);
-      }
+      coordinateValueRound['item'] = item;
 
-      coordinateValueRound['item'] = i;
+      for (let key in coordinate) {
+        coordinateValueRound[key] = Math.round(coordinate[key]);
+      }
 
       coordinatesArray.push(coordinateValueRound);
     }
