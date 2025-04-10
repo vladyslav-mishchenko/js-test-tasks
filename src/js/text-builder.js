@@ -304,8 +304,8 @@ function buildCoordinates() {
         width: left + offsetWidth,
       };
 
-      const coordinateValueRound = {}
-      for(let c in coordinate){
+      const coordinateValueRound = {};
+      for (let c in coordinate) {
         coordinateValueRound[c] = Math.round(coordinate[c]);
       }
 
