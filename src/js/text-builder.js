@@ -1,4 +1,10 @@
 import { el, els, ev, rev } from './dom.js';
+import {
+  htmlElement,
+  htmlElementSelected,
+  htmlMobileSelected,
+  htmlInsertedElement,
+} from './html.js';
 
 const sourcetext = el('#sourcetext');
 const targettext = el('#targettext');
@@ -59,10 +65,7 @@ function surroundSelectedText() {
 
   const range = selection.getRangeAt(0);
 
-  const span = document.createElement('span');
-  span.setAttribute('class', 'selected');
-
-  range.surroundContents(span);
+  range.surroundContents(htmlElementSelected());
 }
 
 /*
@@ -80,7 +83,7 @@ function targetTextToHTML() {
 
     // 3:text node type
     if (nodes[i].nodeType == 3) {
-      const elements = elementHTML(nodes[i]);
+      const elements = elementsHTML(nodes[i]);
       for (let i = 0; i < elements.length; i++) {
         nodesArray.push(elements[i]);
       }
@@ -97,17 +100,13 @@ function targetTextToHTML() {
 /*
 html elements from source string without selected already
 */
-function elementHTML(string) {
+function elementsHTML(string) {
   const str = string.textContent;
 
   const elements = [];
 
   for (let i = 0; i < str.length; i++) {
-    const span = document.createElement('span');
-    span.setAttribute('class', 'e');
-    span.innerText = str[i];
-
-    elements.push(span);
+    elements.push(htmlElement(str[i]));
   }
 
   return elements;
@@ -118,13 +117,10 @@ Build moveable selected block
 */
 function selectedMobileBlock() {
   const selected = el('#targettext > .selected');
+  const mobile = htmlMobileSelected(selected);
 
-  const mobile = selected.cloneNode(true);
-  mobile.classList.remove('selected');
-  mobile.classList.add('mobile');
-
-  const close = document.createElement('span');
-  close.setAttribute('class', 'close');
+  // close element
+  const close = mobile.childNodes[1];
 
   // close selections and go back to default source text
   ev(close, 'mouseup', toDefaultText);
@@ -134,21 +130,6 @@ function selectedMobileBlock() {
 
   // move selected element
   ev(mobile, 'mousedown', moveSelected);
-
-  const line1 = document.createElement('span');
-  const line2 = document.createElement('span');
-  line1.setAttribute('class', 'line line-1');
-  line2.setAttribute('class', 'line line-2');
-
-  close.appendChild(line1);
-  close.appendChild(line2);
-
-  mobile.appendChild(close);
-
-  const marker = document.createElement('span');
-  marker.setAttribute('class', 'marker');
-
-  mobile.appendChild(marker);
 
   const parentTop = targettext.getBoundingClientRect().top;
   const parentLeft = targettext.getBoundingClientRect().left;
@@ -218,11 +199,7 @@ function moveSelected(e) {
     const targetTextElements = els('#targettext > span');
 
     const targetElement = targetTextElements[target];
-
-    const inserted = document.createElement('span');
-    inserted.setAttribute('class', 'inserted');
-    inserted.innerHTML = selected.innerText;
-
+    const inserted = htmlInsertedElement(selected);
     targetText.insertBefore(inserted, targetElement);
 
     el('#targettext > .mobile').remove();
