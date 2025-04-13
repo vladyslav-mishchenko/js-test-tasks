@@ -1,5 +1,8 @@
 import { el, els, ev, rev } from './dom.js';
 
+/*
+html for each letter in editing mode
+*/
 export function htmlElement(inner) {
   const span = document.createElement('span');
   span.setAttribute('class', 'e');
@@ -7,12 +10,18 @@ export function htmlElement(inner) {
   return span;
 }
 
+/*
+html for selected element
+*/
 export function htmlElementSelected() {
   const span = document.createElement('span');
   span.setAttribute('class', 'selected');
   return span;
 }
 
+/*
+html for moveable element with selected text
+*/
 export function htmlMobileSelected(toClone) {
   // clone from .selected element
   const mobile = toClone.cloneNode(true);
@@ -41,6 +50,9 @@ export function htmlMobileSelected(toClone) {
   return mobile;
 }
 
+/*
+html for inseted element
+*/
 export function htmlInsertedElement(inner) {
   const inserted = document.createElement('span');
   inserted.setAttribute('class', 'inserted');
